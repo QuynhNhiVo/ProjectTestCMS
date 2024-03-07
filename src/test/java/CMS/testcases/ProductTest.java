@@ -41,4 +41,14 @@ public class ProductTest extends BaseTest {
         productPage = dashboardPage.openAllProductPage();
         productPage.deleteAndVerify(ConfigData.PRODUCT_NAME);
     }
+
+    @Test
+    public void testVerifyData(){
+        loginPage = new LoginPage(driver);
+        dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
+
+        productPage = dashboardPage.openAllProductPage();
+        productPage.verifyDataNewProduct(ConfigData.PRODUCT_NAME, ConfigData.CATEGORY_NAME, "1", "kg", "10", "2", ((ConfigData.colorArray).length + " items selected"), "4", "0.1","new product test", ConfigData.META_TITLE, ConfigData.META_DESCRIPTION);
+
+    }
 }

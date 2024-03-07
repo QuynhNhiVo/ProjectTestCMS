@@ -5,8 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-
-import java.util.StringTokenizer;
+import org.testng.asserts.SoftAssert;
 
 public class ProductPage {
     private WebDriver driver;
@@ -14,17 +13,17 @@ public class ProductPage {
     private By headerAddNewProduct = By.xpath("//h5[normalize-space()='Add New Product']");
     private String textHeader = "Add New Product";
     private By inputSearchProduct = By.xpath("//input[@id='search']");
-    private By firstResult = By.xpath("//tbody/tr[1]/td[2]/div[1]/div[2]/span");
+    private By firstSearchResult = By.xpath("//tbody/tr[1]/td[2]/div[1]/div[2]/span");
 
     private By inputProductName = By.xpath("//input[@placeholder='Product Name']");
-    private By dropdownCategory = By.xpath("//button[@title='Sport shoes']");
+    private By dropdownCategory = By.xpath("//button[@data-id='category_id']");
     private By inputCategory = By.xpath("//div[@class='dropdown-menu show']//input[@aria-label='Search']");
-    private By dropdownBrand = By.xpath("//button[@title='Select Brand']");
+    private By dropdownBrand = By.xpath("//button[@data-id='brand_id']");
     private By inputBrand= By.xpath("//div[@class='dropdown-menu show']//input[@aria-label='Search']");
     private By inputUnit = By.xpath("//input[@placeholder='Unit (e.g. KG, Pc etc)']");
     private By inputWeight = By.xpath("//input[@placeholder='0.00']");
     private By inputMinPurchase = By.xpath("//input[@name='min_qty']");
-    private By inputTags = By.xpath("//span[@role='textbox']");
+    private By inputTags = By.xpath("//label[.='Tags *']/following-sibling::div//tags");
 
     private By getGalleryImage = By.xpath("//label[contains(.,'Gallery Images')]/following-sibling::div/div[contains(.,'Browse')]/div[1]");
     private By inputSearchFile = By.xpath("//input[@placeholder='Search your files']");
@@ -43,7 +42,7 @@ public class ProductPage {
     private By inputDiscount = By.xpath("//input[@placeholder='Discount']");
     private By inputQuantity = By.xpath("//input[@placeholder='Quantity']");
     private By inputSKU = By.xpath("//input[@placeholder='SKU']");
-    private By inputDesciption= By.xpath("//div[@role='textbox']");
+    private By inputDescription= By.xpath("//div[@role='textbox']");
     private By inputMetaTitle= By.xpath("//input[@placeholder='Meta Title']");
     private By inputMetaDescription = By.xpath("//textarea[@name='meta_description']");
 
@@ -93,8 +92,8 @@ public class ProductPage {
         WebUI.clickElement(dropdownBrand);
         WebUI.setTextAndKey(inputBrand, brand, Keys.ENTER);
         WebUI.setTextElement(inputUnit, kg);
-        WebUI.setTextElement(inputWeight, weight);
-        WebUI.setTextElement(inputMinPurchase, minpur);
+        WebUI.clearAndSetTextElement(inputWeight, weight);
+        WebUI.clearAndSetTextElement(inputMinPurchase, minpur);
         WebUI.setTextAndKey(inputTags, tag, Keys.ENTER);
         WebUI.sleep(2);
 
@@ -107,14 +106,16 @@ public class ProductPage {
         chooseColors(List);
         WebUI.sleep(2);
 
-        WebUI.setTextElement(inputUnitPrice, unit);
-        WebUI.setTextElement(inputDiscount, discount);
-        WebUI.setTextElement(inputDesciption, des);
+        WebUI.clearAndSetTextElement(inputUnitPrice, unit);
+        WebUI.clearAndSetTextElement(inputDiscount, discount);
+        WebUI.setTextElement(inputDescription, des);
         WebUI.setTextElement(inputMetaTitle, title);
         WebUI.setTextElement(inputMetaDescription, metades);
 
+        WebUI.sleep(2);
         WebUI.clickElement(buttonSaveAndPublish);
     }
+
     public void verifySaveSuccess(){
         WebUI.checkElementDisplay(messageSave);
         WebUI.assertEquals(WebUI.getTextElement(messageSave), textMessageSave, "Not Message Save");
@@ -122,8 +123,8 @@ public class ProductPage {
 
     public void verifySearchProduct(String name){
         WebUI.setTextAndKey(inputSearchProduct, name, Keys.ENTER);
-        WebUI.checkElementDisplay(firstResult);
-        WebUI.assertEquals(WebUI.getTextElement(firstResult), name, "Not found product");
+        WebUI.checkElementDisplay(firstSearchResult);
+        WebUI.assertEquals(WebUI.getTextElement(firstSearchResult), name, "Not found product");
     }
 
     public void deleteAndVerify(String name){
@@ -135,4 +136,35 @@ public class ProductPage {
         WebUI.assertEquals(WebUI.getTextElement(messageDelete), textMessageDelete, "Incorrect Message Delete.");
     }
 
+    public void verifyDataNewProduct(String name, String category, String brand, String kg, String weight, String minpur, String List, String unit, String discount, String des, String metatitle, String metades){
+        verifySearchProduct(name);
+        WebUI.clickElement(buttonEdit);
+        SoftAssert softAssert = new SoftAssert();
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputProductName, "value"), name));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(dropdownCategory, "title"), category));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(dropdownBrand, "title"), brand));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputUnit, "value"), kg));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputWeight, "value"), weight));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputMinPurchase, "value"), minpur));
+//        softAssert.assertTrue(WebUI.verifyContains(WebUI.getTextElement(dropdownColor), List));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputUnitPrice, "value"), unit));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputDiscount, "value"), discount));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getTextElement(inputDesciption), des));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputMetaTitle, "value"), title));
+//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputMetaDescription, "value"), metades));
+
+        softAssert.assertEquals(WebUI.getAttributeElement(inputProductName, "value"), name, "Product Name is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(dropdownCategory, "title"), category, "Category Name is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(dropdownBrand, "title"), brand, "Brand is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(inputUnit, "value"), kg, "Unit is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(inputWeight, "value"), weight, "Weight is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(inputMinPurchase, "value"), minpur, "Purchase is wrong");
+        softAssert.assertEquals(WebUI.getTextElement(dropdownColor), List, "Color is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(inputUnitPrice, "value"), unit,  "Unit Price is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(inputDiscount, "value"), discount, "Discount is wrong");
+        softAssert.assertEquals(WebUI.getTextElement(inputDescription), des, "Description is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(inputMetaTitle, "value"), metatitle, "Meta Title is wrong");
+        softAssert.assertEquals(WebUI.getAttributeElement(inputMetaDescription, "value"), metades, "Meta Description is wrong");
+        softAssert.assertAll();
+    }
 }

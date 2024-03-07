@@ -78,6 +78,13 @@ public class WebUI {
         logConsole("Set text on Element: " + by + " - Text: " + text);
     }
 
+    public static void clearAndSetTextElement(By by, String text) {
+        waitForElementVisible(by);
+        getWebElement(by).clear();
+        getWebElement(by).sendKeys(text);
+        logConsole("Set text on Element: " + by + " - Text: " + text);
+    }
+
     public static String getTextElement(By by) {
         waitForElementVisible(by);
         String text = getWebElement(by).getText();

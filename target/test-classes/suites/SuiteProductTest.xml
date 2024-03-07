@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Page Object test example" verbose="1">
+    <parameter name="browser" value="chrome" />
+    <test name="Product Test">
+        <classes>
+            <class name="CMS.testcases.ProductTest">
+                <methods>
+                     <include name="testAddProduct" />
+                    <include name="testVerifySearch"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

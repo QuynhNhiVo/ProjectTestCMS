@@ -23,7 +23,7 @@ public class DashboardPage {
         new WebUI(driver);
     }
 
-    public void clickProfile(){
+    private void clickProfile(){
         WebUI.clickElement(dropdownProfile);
     }
 
@@ -49,10 +49,17 @@ public class DashboardPage {
         return new CategoryPage(driver);
     }
 
-    public CategoryPage openAddNewProduct(){
+    public ProductPage openAddNewProduct(){
         WebUI.clickElement(menuProducts);
         WebUI.clickElement(subMenuAddNewProduct);
 
-        return new CategoryPage(driver);
+        return new ProductPage(driver);
+    }
+
+    public ProductPage openAllProductPage(){
+        WebUI.clickElement(menuProducts);
+        WebUI.clickElement(subAllProducts);
+
+        return new ProductPage(driver);
     }
 }

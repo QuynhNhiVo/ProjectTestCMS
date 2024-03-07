@@ -52,6 +52,7 @@ public class CategoryTest extends BaseTest {
         categoryPage.verifySearchCategory(ConfigData.CATEGORY_NAME);
         categoryPage.deleteAndVerifyCategory();
         categoryPage.clickDelete();
+        categoryPage.verifyCategoryAfterDelete(ConfigData.CATEGORY_NAME);
     }
 
     @Test

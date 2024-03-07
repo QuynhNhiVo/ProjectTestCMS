@@ -95,7 +95,7 @@ public class WebUI {
     public static void setTextAndKey(By by, String value, Keys key){
         waitForPageLoaded();
         getWebElement(by).sendKeys(value, key);
-        logConsole("Set value: " + value + " and Key: " + key);
+        logConsole("Set value: " + value + " and Key: " + key.name());
     }
 
     public static void setKey(By by, Keys key){

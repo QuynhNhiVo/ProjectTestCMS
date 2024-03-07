@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 public class CategoryPage {
@@ -113,5 +114,11 @@ public class CategoryPage {
         WebUI.clickElement(deleteCategory);
         WebUI.checkElementDisplay(messageDelete);
         WebUI.assertEquals(WebUI.getWebElement(messageDelete).getText(), textMessageDel, "Not message delete");
+    }
+
+    public void verifyCategoryAfterDelete(String nameCategory){
+        WebUI.setTextAndKey(inputSearchCategory, nameCategory, Keys.ENTER);
+        WebUI.checkElementDisplay(firstItemSearchCategory);
+        Assert.assertNotEquals(WebUI.getWebElement(firstItemSearchCategory).getText(), nameCategory, "Category has not been Delete");
     }
 }

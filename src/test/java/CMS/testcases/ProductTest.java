@@ -17,7 +17,7 @@ public class ProductTest extends BaseTest {
 
     @Test
     public void testAddProduct(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
         productPage = dashboardPage.openAddNewProduct();
         productPage.verifyAddProductPage();
@@ -26,7 +26,7 @@ public class ProductTest extends BaseTest {
     }
     @Test
     public void testVerifySearch(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
 
         productPage = dashboardPage.openAllProductPage();
@@ -35,7 +35,7 @@ public class ProductTest extends BaseTest {
 
     @Test
     public void testDeleteProduct(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
 
         productPage = dashboardPage.openAllProductPage();
@@ -44,7 +44,7 @@ public class ProductTest extends BaseTest {
 
     @Test
     public void testVerifyData(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
 
         productPage = dashboardPage.openAllProductPage();

@@ -1,14 +1,13 @@
 package CMS.pages;
 
+import drivers.DriverManager;
 import keywords.WebUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.asserts.SoftAssert;
 
 public class ProductPage {
-    private WebDriver driver;
 
     private By headerAddNewProduct = By.xpath("//h5[normalize-space()='Add New Product']");
     private String textHeader = "Add New Product";
@@ -65,10 +64,6 @@ public class ProductPage {
 
     private By buttonEdit = By.xpath("(//a[@title='Edit'])[1]");
 
-    public ProductPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public void verifyAddProductPage(){
         WebUI.assertContains(WebUI.getDriver().getCurrentUrl(), "create", "Can't go to Add New Product Page.");
         WebUI.checkElementDisplay(headerAddNewProduct);
@@ -80,7 +75,7 @@ public class ProductPage {
         WebUI.clickElement(dropdownColor);
         WebUI.sleep(1);
         for(String color: List){
-            Actions actions = new Actions(driver);
+            Actions actions = new Actions(DriverManager.getDriver());
             actions.sendKeys(WebUI.getWebElement(inputColor), color + Keys.ENTER).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).sendKeys(Keys.DELETE).build().perform();
         }
     }
@@ -140,19 +135,6 @@ public class ProductPage {
         verifySearchProduct(name);
         WebUI.clickElement(buttonEdit);
         SoftAssert softAssert = new SoftAssert();
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputProductName, "value"), name));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(dropdownCategory, "title"), category));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(dropdownBrand, "title"), brand));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputUnit, "value"), kg));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputWeight, "value"), weight));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputMinPurchase, "value"), minpur));
-//        softAssert.assertTrue(WebUI.verifyContains(WebUI.getTextElement(dropdownColor), List));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputUnitPrice, "value"), unit));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputDiscount, "value"), discount));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getTextElement(inputDesciption), des));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputMetaTitle, "value"), title));
-//        softAssert.assertTrue(WebUI.verifyEquals(WebUI.getAttributeElement(inputMetaDescription, "value"), metades));
-
         softAssert.assertEquals(WebUI.getAttributeElement(inputProductName, "value"), name, "Product Name is wrong");
         softAssert.assertEquals(WebUI.getAttributeElement(dropdownCategory, "title"), category, "Category Name is wrong");
         softAssert.assertEquals(WebUI.getAttributeElement(dropdownBrand, "title"), brand, "Brand is wrong");

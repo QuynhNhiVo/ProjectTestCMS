@@ -3,13 +3,10 @@ package CMS.pages;
 import keywords.WebUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 public class CategoryPage {
-    private WebDriver driver;
 
     private By headerCategory = By.xpath("//h1[normalize-space()='All categories']");
     private String textHeaderCategory = "All categories";
@@ -40,11 +37,6 @@ public class CategoryPage {
     private By optionDelete = By.xpath("//a[@id='delete-link']");
 
     private By editCategory = By.xpath("//tbody/tr[1]/td[10]/a[1]");
-
-    public CategoryPage(WebDriver driver) {
-        this.driver = driver;
-        new WebUI(driver);
-    }
 
     public void clickAddNewCategory(){
         WebUI.clickElement(buttonAddNewCategory);

@@ -1,5 +1,6 @@
 package common;
 
+import drivers.DriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -10,15 +11,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 public class BaseTest {
-    public static WebDriver driver;
-
     @BeforeMethod
     @Parameters({"browser"})
     public void createBrowser(@Optional("chrome") String browserName){
-        setupDriver(browserName);
+        WebDriver driver = setupDriver(browserName);
+        DriverManager.setDriver(driver);
     }
 
-    public static WebDriver setupDriver(String browserName){
+    public WebDriver setupDriver(String browserName){
+        WebDriver driver;
         switch (browserName.trim().toLowerCase()){
             case "chrome":
                 driver = initChromeDriver();
@@ -33,16 +34,16 @@ public class BaseTest {
         return driver;
     }
 
-    private static WebDriver initChromeDriver() {
-        WebDriver driver; //Khai báo Driver cục bộ
+    private WebDriver initChromeDriver() {
+        WebDriver driver;
         System.out.println("Launching Chrome browser...");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         return driver;
     }
 
-    private static WebDriver initEdgeDriver() {
-        WebDriver driver; //Khai báo Driver cục bộ (tạm thời)
+    private WebDriver initEdgeDriver() {
+        WebDriver driver;
         System.out.println("Launching Edge browser...");
         driver = new EdgeDriver();
         driver.manage().window().maximize();
@@ -51,7 +52,7 @@ public class BaseTest {
 
     @AfterMethod
     public void closeBrowser(){
-        driver.quit();
+        DriverManager.quit();
     }
 
 }

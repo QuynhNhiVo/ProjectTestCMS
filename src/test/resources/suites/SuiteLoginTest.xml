@@ -1,14 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Page Object test example" verbose="1">
 
-    <test name="Login Test Chrome">
+    <test name="Login Test Chrome" parallel="methods">
         <parameter name="browser" value="chrome" />
         <classes>
-            <class name="CMS.testcases.LoginTest">
-                <methods>
-                    <include name="loginSuccess" />
-                </methods>
-            </class>
+            <class name="CMS.testcases.LoginTest"/>
         </classes>
     </test>
 

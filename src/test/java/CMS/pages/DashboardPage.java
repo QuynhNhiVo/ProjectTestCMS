@@ -1,12 +1,10 @@
 package CMS.pages;
 
+import drivers.DriverManager;
 import keywords.WebUI;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
 public class DashboardPage {
-
-    private WebDriver driver;
 
     private By inputSearchDashboard = By.xpath("//input[@id='email']");
     private By menuDashboard = By.xpath("//span[normalize-space()='Dashboard']");
@@ -17,19 +15,13 @@ public class DashboardPage {
     private By dropdownProfile = By.xpath("//span[@class='d-flex align-items-center']");
     private By buttonLogout = By.xpath("//a[@href='https://cms.anhtester.com/logout']");
 
-
-    public DashboardPage(WebDriver driver) {
-        this.driver = driver;
-        new WebUI(driver);
-    }
-
     private void clickProfile(){
         WebUI.clickElement(dropdownProfile);
     }
 
     public void clickMenuDashboard(){
         WebUI.clickElement(menuDashboard);
-        WebUI.assertContains(driver.getCurrentUrl(), "admin", "Still on Login Page");
+        WebUI.assertContains(DriverManager.getDriver().getCurrentUrl(), "admin", "Still on Login Page");
     }
 
     public void clickLogout(){
@@ -39,27 +31,27 @@ public class DashboardPage {
     public LoginPage logoutCMS(){
         clickProfile();
         clickLogout();
-        return new LoginPage(driver);
+        return new LoginPage();
     }
 
     public CategoryPage openAndVerifyCategoryPage(){
         WebUI.clickElement(menuProducts);
         WebUI.clickElement(subMenuCategory);
-        WebUI.assertContains(driver.getCurrentUrl(), "categories", "Still on Dashboard Page");
-        return new CategoryPage(driver);
+        WebUI.assertContains(DriverManager.getDriver().getCurrentUrl(), "categories", "Still on Dashboard Page");
+        return new CategoryPage();
     }
 
     public ProductPage openAddNewProduct(){
         WebUI.clickElement(menuProducts);
         WebUI.clickElement(subMenuAddNewProduct);
 
-        return new ProductPage(driver);
+        return new ProductPage();
     }
 
     public ProductPage openAllProductPage(){
         WebUI.clickElement(menuProducts);
         WebUI.clickElement(subAllProducts);
 
-        return new ProductPage(driver);
+        return new ProductPage();
     }
 }

@@ -1,5 +1,6 @@
 package keywords;
 
+import drivers.DriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,18 +12,12 @@ import java.time.Duration;
 import java.util.List;
 
 public class WebUI {
-    private static WebDriver driver;
-
     private static int TIMEOUT = 10;
     private static double STEP_TIME = 0.5;
     private static int PAGE_LOAD_TIMEOUT = 20;
 
-    public WebUI(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public static Boolean checkElementExist(By by) {
-        List<WebElement> listElement = driver.findElements(by);
+        List<WebElement> listElement = DriverManager.getDriver().findElements(by);
         if (listElement.size() > 0) {
             System.out.println("Element: " + by + " EXIST.");
             return true;
@@ -50,7 +45,7 @@ public class WebUI {
     }
 
     public static WebElement getWebElement(By by) {
-        return driver.findElement(by);
+        return DriverManager.getDriver().findElement(by);
     }
 
     public static void logConsole(Object message) {
@@ -58,12 +53,12 @@ public class WebUI {
     }
 
     public static void openURL(String url) {
-        driver.get(url);
+        DriverManager.getDriver().get(url);
         logConsole("Open: " + url);
     }
 
     public static WebDriver getDriver() {
-        return driver;
+        return DriverManager.getDriver();
     }
 
     public static void clickElement(By by) {
@@ -94,7 +89,7 @@ public class WebUI {
 
     public static String getAttributeElement(By by, String attribute){
         WebUI.getWebElement(by).getAttribute(attribute);
-        String value = driver.findElement(by).getAttribute(attribute);
+        String value = DriverManager.getDriver().findElement(by).getAttribute(attribute);
         logConsole("Get attribute of element: " + by + " value is: " + value);
         return value;
     }
@@ -165,7 +160,7 @@ public class WebUI {
 
     public static void waitForElementClickable(By by) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
+            WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
             wait.until(ExpectedConditions.elementToBeClickable(getWebElement(by)));
         } catch (Throwable error) {
             Assert.fail("Timeout waiting for the element ready to click. " + by.toString());
@@ -175,7 +170,7 @@ public class WebUI {
 
     public static void waitForElementVisible(By by) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
+            WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Throwable error) {
             Assert.fail("Timeout waiting for the element Visible. " + by.toString());
@@ -184,8 +179,8 @@ public class WebUI {
     }
 
     public static void waitForPageLoaded() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(PAGE_LOAD_TIMEOUT), Duration.ofMillis(500));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(PAGE_LOAD_TIMEOUT), Duration.ofMillis(500));
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
 
         //Wait for Javascript to load
         ExpectedCondition<Boolean> jsLoad = new ExpectedCondition<Boolean>() {

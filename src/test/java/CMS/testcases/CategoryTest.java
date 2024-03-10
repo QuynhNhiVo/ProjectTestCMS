@@ -14,7 +14,7 @@ public class CategoryTest extends BaseTest {
 
     @Test
     public void testAddNewCategory(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
         categoryPage.verifyCategoryPage();
@@ -24,7 +24,7 @@ public class CategoryTest extends BaseTest {
 
     @Test
     public void testSaveAddNewCategory(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
         categoryPage.verifyCategoryPage();
@@ -36,7 +36,7 @@ public class CategoryTest extends BaseTest {
 
     @Test
     public void testSearchAndCancelDelete(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
         categoryPage.verifySearchCategory(ConfigData.CATEGORY_NAME);
@@ -46,7 +46,7 @@ public class CategoryTest extends BaseTest {
 
     @Test
     public void testSearchAndDelete(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
         categoryPage.verifySearchCategory(ConfigData.CATEGORY_NAME);
@@ -57,7 +57,7 @@ public class CategoryTest extends BaseTest {
 
     @Test
     public void testDataCategory(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
         categoryPage.verifySearchCategory(ConfigData.CATEGORY_NAME);

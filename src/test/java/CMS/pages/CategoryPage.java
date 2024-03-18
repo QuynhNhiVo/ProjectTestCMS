@@ -1,5 +1,6 @@
 package CMS.pages;
 
+import constants.ConfigData;
 import keywords.WebUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -17,14 +18,17 @@ public class CategoryPage {
     private By inputOrderingCategory = By.xpath("//input[@id='order_level']");
     private By inputMetaTitle= By.xpath("//input[@placeholder='Meta Title']");
     private By inputMetaDescription = By.xpath("//textarea[@name='meta_description']");
-    private By dropdownParentCategory = By.xpath("//label[normalize-space()='Parent Category']/following-sibling::div//select");
+    private By dropdownParentCategory = By.xpath("//label[normalize-space()='Parent Category']/following-sibling::div//button");
     private By inputParentCategory = By.xpath("//div[@class='dropdown-menu show']//input[@aria-label='Search']");
     private By dropdownTypeCategory = By.xpath("//label[normalize-space()='Type']/following-sibling::div//select");
     private By addFileBannerCategory = By.xpath("//label[normalize-space()='Banner (200x200)']/following::div[normalize-space()='Browse'][1]");
     private By addFileIconCategory = By.xpath("//label[normalize-space()='Icon (32x32)']/following::div[normalize-space()='Browse'][2]");
+    private By uploadFile = By.xpath("//a[normalize-space()='Upload New']");
+    private By browser = By.xpath("//button[normalize-space()='Browse']");
     private By searchFile = By.xpath("//input[@placeholder='Search your files']");
     private By buttonAddFile = By.xpath("//button[normalize-space()='Add Files']");
-    private By fileImage = By.xpath("//img[@class='img-fit']");
+    private String nameImage = "cookingrice";
+    private By fileImage = By.xpath("//span[contains(text(),'cookingrice')]");
     private By dropdownFilterCategory = By.xpath("//label[normalize-space()='Filtering Attributes']/following-sibling::div//select");
     private By buttonSave = By.xpath("//button[normalize-space()='Save']");
     private By messageSave = By.xpath("//span[@data-notify='message']");
@@ -50,22 +54,20 @@ public class CategoryPage {
         WebUI.clickElement(optionDelete);
     }
 
-    public void inputDataNewCategory(String name, String ordering, String parent,String value, String title, String description, String text){
+    public void inputDataNewCategory(String name, String parent, String ordering,String value, String title, String description, String text){
         WebUI.setTextElement(inputNameCategory, name);
-        WebUI.setTextElement(inputOrderingCategory, ordering);
         WebUI.clickElement(dropdownParentCategory);
         WebUI.setTextAndKey(inputParentCategory, parent, Keys.ENTER);
+        WebUI.setTextElement(inputOrderingCategory, ordering);
         WebUI.select(dropdownTypeCategory, "value", value);
         WebUI.clickElement(addFileBannerCategory);
-        WebUI.setTextElement(searchFile, "123");
+        WebUI.setTextElement(searchFile, nameImage);
         WebUI.sleep(2);
         WebUI.clickElement(fileImage);
         WebUI.clickElement(buttonAddFile);
         WebUI.setTextElement(inputMetaTitle, title);
         WebUI.setTextElement(inputMetaDescription, description);
         WebUI.select(dropdownFilterCategory, "text", text);
-        WebUI.sleep(2);
-
     }
 
     public void saveCategory(){
@@ -88,13 +90,14 @@ public class CategoryPage {
         WebUI.assertEquals(WebUI.getWebElement(firstItemSearchCategory).getText(), nameCategory, "Can't Find Category");
     }
 
-    public void verifyDataAfterAdd(String categoryname, String ordering, String parent,String type, String title, String description, String text) {
+    public void verifyDataAfterAdd(String categoryname, String parent, String ordering,String type, String title, String description, String text) {
         SoftAssert softAssert = new SoftAssert();
         WebUI.clickElement(editCategory);
+        WebUI.waitForPageLoaded();
         softAssert.assertTrue((WebUI.getDriver().getCurrentUrl()).contains("edit"), "URL not contains keyword edit.");
         softAssert.assertEquals(WebUI.getAttributeElement(inputNameCategory, "value"), categoryname, "Company Name incorrect");
+        softAssert.assertEquals(WebUI.getTextElement(dropdownParentCategory), parent, "parent incorrect");
         softAssert.assertEquals(WebUI.getAttributeElement(inputOrderingCategory, "value"), ordering, "ordering incorrect");
-        softAssert.assertEquals(WebUI.getFirstSelectOption(dropdownParentCategory), parent, "parent incorrect");
         softAssert.assertEquals((WebUI.getFirstSelectOption(dropdownTypeCategory)), type, "type incorrect");
         softAssert.assertEquals(WebUI.getAttributeElement(inputMetaTitle, "value"), title, "title incorrect");
         softAssert.assertEquals(WebUI.getAttributeElement(inputMetaDescription, "value"), description, "value incorrect");
@@ -112,5 +115,9 @@ public class CategoryPage {
         WebUI.setTextAndKey(inputSearchCategory, nameCategory, Keys.ENTER);
         WebUI.checkElementDisplay(firstItemSearchCategory);
         Assert.assertNotEquals(WebUI.getWebElement(firstItemSearchCategory).getText(), nameCategory, "Category has not been Delete");
+    }
+
+    public void checkNumberItemSearch(){
+
     }
 }

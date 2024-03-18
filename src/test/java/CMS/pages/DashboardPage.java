@@ -12,6 +12,7 @@ public class DashboardPage {
     private By subMenuAddNewProduct = By.xpath("//span[normalize-space()='Add New Product']");
     private By subAllProducts = By.xpath("//span[normalize-space()='All products']");
     private By subMenuCategory = By.xpath("//span[normalize-space()='Category']");
+    private By subMenuBrand = By.xpath("//span[normalize-space()='Brand']");
     private By dropdownProfile = By.xpath("//span[@class='d-flex align-items-center']");
     private By buttonLogout = By.xpath("//a[@href='https://cms.anhtester.com/logout']");
 
@@ -54,4 +55,12 @@ public class DashboardPage {
 
         return new ProductPage();
     }
+
+    public BrandPage openBrandPage(){
+        WebUI.clickElement(menuProducts);
+        WebUI.clickElement(subMenuBrand);
+
+        return new BrandPage();
+    }
+
 }

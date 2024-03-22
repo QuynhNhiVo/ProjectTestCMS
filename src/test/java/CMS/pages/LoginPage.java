@@ -4,6 +4,9 @@ import constants.ConfigData;
 import drivers.DriverManager;
 import keywords.WebUI;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import utils.LogUtils;
 
 public class LoginPage {
@@ -42,8 +45,35 @@ public class LoginPage {
         WebUI.openURL(ConfigData.URL);
         sendEmail(email);
         sendPassword(password);
+        verifyFormatValueInput(WebUI.getWebElement(inputEmail));
+        verifyFormatValueInput(WebUI.getWebElement(inputPassword));
+        WebUI.sleep(1);
         clickButtonLogin();
         return new DashboardPage();
+    }
+
+    private String verifyLoginFieldBlank(WebElement element){
+
+        LogUtils.info(element.getAttribute("id") + " Required: " + ((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].required;", element));
+        Assert.assertTrue((Boolean)((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].required;", element), "Email not required field.");
+
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) DriverManager.getDriver();
+        return (String) jsExecutor.executeScript("return arguments[0].validationMessage;", element);
+    }
+
+    private void verifyFormatValueInput(WebElement element){
+        LogUtils.info(element.getAttribute("id") + " Check Valid: " + ((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].validity.valid;", element));
+        Assert.assertTrue((Boolean)((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].validity.valid;", element), "Email value not valid.");
+    }
+
+    public void verifyEmailEmpty(){
+        WebUI.assertEquals(verifyLoginFieldBlank(WebUI.getWebElement(inputEmail)), "Please fill out this field.", "The validation message of Email field not match.");
+        verifyFormatValueInput(WebUI.getWebElement(inputEmail));
+    }
+
+    public void verifyPasswordlEmpty(){
+        WebUI.assertEquals(verifyLoginFieldBlank(WebUI.getWebElement(inputPassword)), "Please fill out this field.", "The validation message of Email field not match.");
+        verifyFormatValueInput(WebUI.getWebElement(inputPassword));
     }
 
 }

@@ -5,9 +5,13 @@ import CMS.pages.DashboardPage;
 import CMS.pages.LoginPage;
 import common.BaseTest;
 import constants.ConfigData;
+import dataprovider.DataProviderFactory;
 import helpers.ExcelHelper;
 import keywords.WebUI;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.Hashtable;
 
 public class CategoryTest extends BaseTest {
     LoginPage loginPage;
@@ -18,20 +22,16 @@ public class CategoryTest extends BaseTest {
         ExcelHelper excelHelperLogin = new ExcelHelper();
         excelHelperLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
-        dashboardPage = loginPage.loginCMS(
+        dashboardPage = loginPage.loginCMSSuccess(
                 excelHelperLogin.getCellData("EMAIL", 1),
                 excelHelperLogin.getCellData("PASSWORD", 1));
     }
-    @Test
-    public void testAddNewCategory(){
+
+    @Test(dataProvider = "data_add_category", dataProviderClass = DataProviderFactory.class)
+    @DataProvider(parallel = true)
+    public void testAddNewCategory(Hashtable<String, String> data){
         loginPage = new LoginPage();
         loginCMS();
-//        ExcelHelper excelHelperLogin = new ExcelHelper();
-//        excelHelperLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
-//
-//        dashboardPage = loginPage.loginCMS(
-//                excelHelperLogin.getCellData("EMAIL", 1),
-//                excelHelperLogin.getCellData("PASSWORD", 1));
 
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
         categoryPage.verifyCategoryPage();
@@ -42,13 +42,13 @@ public class CategoryTest extends BaseTest {
         excelHelperCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
 
         categoryPage.inputDataNewCategory(
-                excelHelperCate.getCellData("NAME", 1),
-                excelHelperCate.getCellData("PARENT",1),
-                excelHelperCate.getCellData("ORDERING", 1),
-                excelHelperCate.getCellData("TYPE",1),
-                excelHelperCate.getCellData("META_TITLE", 1),
-                excelHelperCate.getCellData("META_DES",1),
-                excelHelperCate.getCellData("FILTERING", 1)
+                data.get("NAME"),
+                data.get("PARENT"),
+                data.get("ORDERING"),
+                data.get("TYPE"),
+                data.get("META_TITLE"),
+                data.get("META_DES"),
+                data.get("FILTERING")
         );
     }
 
@@ -58,7 +58,7 @@ public class CategoryTest extends BaseTest {
         ExcelHelper excelHelperLogin = new ExcelHelper();
         excelHelperLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
-        dashboardPage = loginPage.loginCMS(
+        dashboardPage = loginPage.loginCMSSuccess(
                 excelHelperLogin.getCellData("EMAIL", 1),
                 excelHelperLogin.getCellData("PASSWORD", 1));
 
@@ -87,7 +87,6 @@ public class CategoryTest extends BaseTest {
     @Test
     public void testDataCategory(){
         loginPage = new LoginPage();
-//        dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
         loginCMS();
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
 

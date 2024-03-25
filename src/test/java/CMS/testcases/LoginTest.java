@@ -5,7 +5,6 @@ import CMS.pages.LoginPage;
 import common.BaseTest;
 import constants.ConfigData;
 import helpers.ExcelHelper;
-import helpers.PropertiesHelper;
 import keywords.WebUI;
 import org.testng.annotations.Test;
 
@@ -14,75 +13,62 @@ public class LoginTest extends BaseTest {
     DashboardPage dashboardPage;
 
     @Test
-    public void loginSuccess(){
+    public void Test_LoginSuccess(){
         loginPage = new LoginPage();
         ExcelHelper excelHelper = new ExcelHelper();
         excelHelper.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
-
-        dashboardPage = loginPage.loginCMS(
+        dashboardPage = loginPage.loginCMSSuccess(
                 excelHelper.getCellData("EMAIL", 1),
                 excelHelper.getCellData("PASSWORD", 1));
-
-        loginPage.verifyLoginSuccess();
         dashboardPage.logoutCMS();
     }
 
     @Test
-    public void loginWithEmailInvalid(){
+    public void Test_LoginWithEmailInvalid(){
         loginPage = new LoginPage();
 
         ExcelHelper excelHelper = new ExcelHelper();
         excelHelper.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
-        dashboardPage = loginPage.loginCMS(
+        loginPage.loginWithEmailInvalid(
                 excelHelper.getCellData("EMAIL", 2),
                 excelHelper.getCellData("PASSWORD", 2));
-
-        loginPage.verifyLoginFail();
     }
 
     @Test
-    public void loginWithPasswordInvalid(){
+    public void Test_LoginWithPasswordInvalid(){
         loginPage = new LoginPage();
 
         ExcelHelper excelHelper = new ExcelHelper();
         excelHelper.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
-        dashboardPage = loginPage.loginCMS(
+        loginPage.loginWithPasswordInvalid(
                 excelHelper.getCellData("EMAIL", 3),
                 excelHelper.getCellData("PASSWORD", 3));
-
-        loginPage.verifyLoginFail();
     }
 
     @Test
-    public void loginWithEmailEmpty(){
+    public void Test_LoginWithEmailEmpty(){
         loginPage = new LoginPage();
 
         ExcelHelper excelHelper = new ExcelHelper();
         excelHelper.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
-        dashboardPage = loginPage.loginCMS(
+        loginPage.loginWithEmailEmpty(
                 excelHelper.getCellData("EMAIL", 4),
                 excelHelper.getCellData("PASSWORD", 4));
-
-        WebUI.sleep(1);
-        loginPage.verifyEmailEmpty();
     }
 
     @Test
-    public void loginWithPasswordEmpty(){
+    public void Test_LoginWithPasswordEmpty(){
         loginPage = new LoginPage();
 
         ExcelHelper excelHelper = new ExcelHelper();
         excelHelper.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
-        dashboardPage = loginPage.loginCMS(
+        loginPage.loginWithPasswordEmpty(
                 excelHelper.getCellData("EMAIL", 5),
                 excelHelper.getCellData("PASSWORD", 5));
-
-        WebUI.sleep(3);
-        loginPage.verifyPasswordlEmpty();
     }
 
 }

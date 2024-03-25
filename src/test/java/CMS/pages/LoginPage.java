@@ -5,7 +5,6 @@ import drivers.DriverManager;
 import keywords.WebUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import utils.LogUtils;
 
@@ -19,16 +18,22 @@ public class LoginPage {
     private String messageLoginFail = "Invalid login credentials";
     private By getMessage = By.xpath("//span[@data-notify='message']");
 
-    private void sendEmail(String email){
+    private void clickButtonLogin(){
+        WebUI.clickElement(buttonLogin);
+    }
+
+    private void setInputEmail(String email){
         WebUI.setTextElement(inputEmail, email);
     }
 
-    private void sendPassword(String password){
+    private void setInputPassword(String password){
         WebUI.setTextElement(inputPassword, password);
     }
 
-    private void clickButtonLogin(){
-        WebUI.clickElement(buttonLogin);
+    private void loginCMS(String email, String password){
+        WebUI.openURL(ConfigData.URL);
+        setInputEmail(email);
+        setInputPassword(password);
     }
 
     public void verifyLoginSuccess(){
@@ -36,44 +41,62 @@ public class LoginPage {
     }
 
     public void verifyLoginFail(){
-        WebUI.assertContains(DriverManager.getDriver().getCurrentUrl(), "login", "Go to Dashboard Page");
         WebUI.checkElementDisplay(getMessage);
         WebUI.assertEquals(WebUI.getTextElement(getMessage), messageLoginFail, "Message not Display");
+        WebUI.assertContains(DriverManager.getDriver().getCurrentUrl(), "login", "Go to Dashboard Page");
     }
 
-    public DashboardPage loginCMS(String email, String password){
+    private void verifyFormatValueInput(By by){
+        LogUtils.info(WebUI.getAttributeElement(by, "id") + " Check Format Valid: " + ((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].validity.valid;", WebUI.getWebElement(by)));
+        Assert.assertTrue((Boolean)((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].validity.valid;", WebUI.getWebElement(by)), (WebUI.getWebElement(by).getAttribute("id") + " value not valid."));
+    }
+
+    private void verifyRequiredValidationAndMessage(By by){
+
+        LogUtils.info(WebUI.getWebElement(by).getAttribute("id") + " Required: " + ((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].required;", WebUI.getWebElement(by)));
+        Assert.assertTrue((Boolean)((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].required;", WebUI.getWebElement(by)), (WebUI.getWebElement(by).getAttribute("id") + " not required field."));
+
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) DriverManager.getDriver();
+        WebUI.assertEquals((jsExecutor.executeScript("return arguments[0].validationMessage;", WebUI.getWebElement(by))), "Please fill out this field.", "The validation message of Email field not match.");
+    }
+
+    public DashboardPage loginCMSSuccess(String email, String password){
         WebUI.openURL(ConfigData.URL);
-        sendEmail(email);
-        sendPassword(password);
-        verifyFormatValueInput(WebUI.getWebElement(inputEmail));
-        verifyFormatValueInput(WebUI.getWebElement(inputPassword));
-        WebUI.sleep(1);
+        loginCMS(email, password);
+        verifyFormatValueInput(inputEmail);
+        verifyFormatValueInput(inputPassword);
         clickButtonLogin();
+        verifyLoginSuccess();
         return new DashboardPage();
     }
 
-    private String verifyLoginFieldBlank(WebElement element){
-
-        LogUtils.info(element.getAttribute("id") + " Required: " + ((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].required;", element));
-        Assert.assertTrue((Boolean)((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].required;", element), "Email not required field.");
-
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) DriverManager.getDriver();
-        return (String) jsExecutor.executeScript("return arguments[0].validationMessage;", element);
+    public void loginWithEmailInvalid(String email, String password){
+        loginCMS(email, password);
+        verifyFormatValueInput(inputEmail);
+        verifyFormatValueInput(inputPassword);
+        clickButtonLogin();
+        verifyLoginFail();
     }
 
-    private void verifyFormatValueInput(WebElement element){
-        LogUtils.info(element.getAttribute("id") + " Check Valid: " + ((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].validity.valid;", element));
-        Assert.assertTrue((Boolean)((JavascriptExecutor) DriverManager.getDriver()).executeScript("return arguments[0].validity.valid;", element), "Email value not valid.");
+    public void loginWithPasswordInvalid(String email, String password){
+        loginCMS(email, password);
+        verifyFormatValueInput(inputEmail);
+        verifyFormatValueInput(inputPassword);
+        clickButtonLogin();
+        verifyLoginFail();
     }
 
-    public void verifyEmailEmpty(){
-        WebUI.assertEquals(verifyLoginFieldBlank(WebUI.getWebElement(inputEmail)), "Please fill out this field.", "The validation message of Email field not match.");
-        verifyFormatValueInput(WebUI.getWebElement(inputEmail));
+    public void loginWithEmailEmpty(String email, String password){
+        loginCMS(email, password);
+        clickButtonLogin();
+        verifyRequiredValidationAndMessage(inputEmail);
+        verifyFormatValueInput(inputPassword);
     }
 
-    public void verifyPasswordlEmpty(){
-        WebUI.assertEquals(verifyLoginFieldBlank(WebUI.getWebElement(inputPassword)), "Please fill out this field.", "The validation message of Email field not match.");
-        verifyFormatValueInput(WebUI.getWebElement(inputPassword));
+    public void loginWithPasswordEmpty(String email, String password){
+        loginCMS(email, password);
+        clickButtonLogin();
+        verifyRequiredValidationAndMessage(inputPassword);
+        verifyFormatValueInput(inputEmail);
     }
-
 }

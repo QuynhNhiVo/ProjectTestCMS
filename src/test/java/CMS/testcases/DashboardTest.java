@@ -18,14 +18,14 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testDashboardPage(){
         loginPage = new LoginPage();
-        dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
+        dashboardPage = loginPage.loginCMSSuccess(ConfigData.EMAIL, ConfigData.PASSWORD);
         loginPage.verifyLoginSuccess();
     }
 
     @Test
     public void testAddCategoryPage(){
         loginPage = new LoginPage();
-        dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
+        dashboardPage = loginPage.loginCMSSuccess(ConfigData.EMAIL, ConfigData.PASSWORD);
         loginPage.verifyLoginSuccess();
 
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
@@ -34,7 +34,7 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testSwitchToCategoryPage(){
         loginPage = new LoginPage();
-        dashboardPage = loginPage.loginCMS(ConfigData.EMAIL, ConfigData.PASSWORD);
+        dashboardPage = loginPage.loginCMSSuccess(ConfigData.EMAIL, ConfigData.PASSWORD);
         loginPage.verifyLoginSuccess();
 
         categoryPage = dashboardPage.openAndVerifyCategoryPage();

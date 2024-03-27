@@ -1,10 +1,6 @@
 package constants;
 
-import helpers.PropertiesHelper;
-import helpers.SystemHelper;
-
-import java.util.ArrayList;
-import java.util.List;
+import helpers.PropertiesHelpers;
 
 public class ConfigData {
     public static String URL = "https://cms.anhtester.com/login";
@@ -15,6 +11,6 @@ public class ConfigData {
     public static String colorArray[] = {"red", "blue", "yellow"};
     public static String META_TITLE = "Title of meta";
     public static String META_DESCRIPTION = "Description of meta";
-    public static String EXCEL_FILE_DATA = PropertiesHelper.getValue("EXCEL_FILE");
-    public static String EXCEL_FILE_CATE = PropertiesHelper.getValue("EXCEL_CATE");
+    public static String EXCEL_FILE_DATA = PropertiesHelpers.getValue("EXCEL_FILE");
+    public static String EXCEL_FILE_CATE = PropertiesHelpers.getValue("EXCEL_CATE");
 }

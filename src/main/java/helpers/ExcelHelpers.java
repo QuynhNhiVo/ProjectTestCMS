@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class ExcelHelper {
+public class ExcelHelpers {
     private FileInputStream fis;
     private FileOutputStream fileOut;
     private Workbook wb;

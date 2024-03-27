@@ -61,7 +61,6 @@ public class LoginPage {
     }
 
     public DashboardPage loginCMSSuccess(String email, String password){
-        WebUI.openURL(ConfigData.URL);
         loginCMS(email, password);
         verifyFormatValueInput(inputEmail);
         verifyFormatValueInput(inputPassword);

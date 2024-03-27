@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Properties;
 
-public class PropertiesHelper {
+public class PropertiesHelpers {
 
 
     private static Properties properties;
@@ -25,7 +25,7 @@ public class PropertiesHelper {
 
             for (String f : files) {
                 Properties tempProp = new Properties();
-                linkFile = SystemHelper.getCurrentDirectory() + f;
+                linkFile = SystemHelpers.getCurrentDirectory() + f;
                 file = new FileInputStream(linkFile);
                 tempProp.load(file);
                 properties.putAll(tempProp);
@@ -39,7 +39,7 @@ public class PropertiesHelper {
     public static void setFile(String relPropertiesFilePath) {
         properties = new Properties();
         try {
-            linkFile = SystemHelper.getCurrentDirectory() + relPropertiesFilePath;
+            linkFile = SystemHelpers.getCurrentDirectory() + relPropertiesFilePath;
             file = new FileInputStream(linkFile);
             properties.load(file);
             file.close();
@@ -51,7 +51,7 @@ public class PropertiesHelper {
     public static void setDefaultFile() {
         properties = new Properties();
         try {
-            linkFile = SystemHelper.getCurrentDirectory() + relPropertiesFilePathDefault;
+            linkFile = SystemHelpers.getCurrentDirectory() + relPropertiesFilePathDefault;
             file = new FileInputStream(linkFile);
             properties.load(file);
             file.close();
@@ -65,7 +65,7 @@ public class PropertiesHelper {
         try {
             if (file == null) {
                 properties = new Properties();
-                linkFile = SystemHelper.getCurrentDirectory() + relPropertiesFilePathDefault;
+                linkFile = SystemHelpers.getCurrentDirectory() + relPropertiesFilePathDefault;
                 file = new FileInputStream(linkFile);
                 properties.load(file);
                 file.close();
@@ -82,10 +82,10 @@ public class PropertiesHelper {
         try {
             if (file == null) {
                 properties = new Properties();
-                file = new FileInputStream(SystemHelper.getCurrentDirectory() + relPropertiesFilePathDefault);
+                file = new FileInputStream(SystemHelpers.getCurrentDirectory() + relPropertiesFilePathDefault);
                 properties.load(file);
                 file.close();
-                out = new FileOutputStream(SystemHelper.getCurrentDirectory() + relPropertiesFilePathDefault);
+                out = new FileOutputStream(SystemHelpers.getCurrentDirectory() + relPropertiesFilePathDefault);
             }
             //Ghi vào cùng file Prop với file lấy ra
             out = new FileOutputStream(linkFile);

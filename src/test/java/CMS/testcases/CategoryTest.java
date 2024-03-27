@@ -6,7 +6,7 @@ import CMS.pages.LoginPage;
 import common.BaseTest;
 import constants.ConfigData;
 import dataprovider.DataProviderFactory;
-import helpers.ExcelHelper;
+import helpers.ExcelHelpers;
 import keywords.WebUI;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -19,12 +19,12 @@ public class CategoryTest extends BaseTest {
     CategoryPage categoryPage;
 
     private void loginCMS(){
-        ExcelHelper excelHelperLogin = new ExcelHelper();
-        excelHelperLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
+        ExcelHelpers excelHelpersLogin = new ExcelHelpers();
+        excelHelpersLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
         dashboardPage = loginPage.loginCMSSuccess(
-                excelHelperLogin.getCellData("EMAIL", 1),
-                excelHelperLogin.getCellData("PASSWORD", 1));
+                excelHelpersLogin.getCellData("EMAIL", 1),
+                excelHelpersLogin.getCellData("PASSWORD", 1));
     }
 
     @Test(dataProvider = "data_add_category", dataProviderClass = DataProviderFactory.class)
@@ -38,8 +38,8 @@ public class CategoryTest extends BaseTest {
         categoryPage.clickAddNewCategory();
         WebUI.sleep(2);
 
-        ExcelHelper excelHelperCate = new ExcelHelper();
-        excelHelperCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
+        ExcelHelpers excelHelpersCate = new ExcelHelpers();
+        excelHelpersCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
 
         categoryPage.inputDataNewCategory(
                 data.get("NAME"),
@@ -55,33 +55,33 @@ public class CategoryTest extends BaseTest {
     @Test
     public void testAddNewSaveCategory(){
         loginPage = new LoginPage();
-        ExcelHelper excelHelperLogin = new ExcelHelper();
-        excelHelperLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
+        ExcelHelpers excelHelpersLogin = new ExcelHelpers();
+        excelHelpersLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
 
         dashboardPage = loginPage.loginCMSSuccess(
-                excelHelperLogin.getCellData("EMAIL", 1),
-                excelHelperLogin.getCellData("PASSWORD", 1));
+                excelHelpersLogin.getCellData("EMAIL", 1),
+                excelHelpersLogin.getCellData("PASSWORD", 1));
 
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
         categoryPage.verifyCategoryPage();
         categoryPage.clickAddNewCategory();
         WebUI.sleep(2);
 
-        ExcelHelper excelHelperCate = new ExcelHelper();
-        excelHelperCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
+        ExcelHelpers excelHelpersCate = new ExcelHelpers();
+        excelHelpersCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
 
         categoryPage.inputDataNewCategory(
-                excelHelperCate.getCellData("NAME", 1),
-                excelHelperCate.getCellData("PARENT",1),
-                excelHelperCate.getCellData("ORDERING", 1),
-                excelHelperCate.getCellData("TYPE",1),
-                excelHelperCate.getCellData("META_TITLE", 1),
-                excelHelperCate.getCellData("META_DES",1),
-                excelHelperCate.getCellData("FILTERING", 1)
+                excelHelpersCate.getCellData("NAME", 1),
+                excelHelpersCate.getCellData("PARENT",1),
+                excelHelpersCate.getCellData("ORDERING", 1),
+                excelHelpersCate.getCellData("TYPE",1),
+                excelHelpersCate.getCellData("META_TITLE", 1),
+                excelHelpersCate.getCellData("META_DES",1),
+                excelHelpersCate.getCellData("FILTERING", 1)
         );
         categoryPage.saveCategory();
         categoryPage.verifySaveCategory();
-        categoryPage.verifySearchCategory(excelHelperCate.getCellData("NAME", 1));
+        categoryPage.verifySearchCategory(excelHelpersCate.getCellData("NAME", 1));
     }
 
     @Test
@@ -90,30 +90,30 @@ public class CategoryTest extends BaseTest {
         loginCMS();
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
 
-        ExcelHelper excelHelperCate = new ExcelHelper();
-        excelHelperCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
-        categoryPage.verifySearchCategory(excelHelperCate.getCellData("NAME", 1));
+        ExcelHelpers excelHelpersCate = new ExcelHelpers();
+        excelHelpersCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
+        categoryPage.verifySearchCategory(excelHelpersCate.getCellData("NAME", 1));
 
         categoryPage.verifyDataAfterAdd(
-                excelHelperCate.getCellData("NAME", 1),
-                excelHelperCate.getCellData("PARENT",1),
-                excelHelperCate.getCellData("ORDERING", 1),
-                excelHelperCate.getCellData("TYPE",1),
-                excelHelperCate.getCellData("META_TITLE", 1),
-                excelHelperCate.getCellData("META_DES",1),
-                excelHelperCate.getCellData("FILTERING", 1));
+                excelHelpersCate.getCellData("NAME", 1),
+                excelHelpersCate.getCellData("PARENT",1),
+                excelHelpersCate.getCellData("ORDERING", 1),
+                excelHelpersCate.getCellData("TYPE",1),
+                excelHelpersCate.getCellData("META_TITLE", 1),
+                excelHelpersCate.getCellData("META_DES",1),
+                excelHelpersCate.getCellData("FILTERING", 1));
     }
 
     @Test
     public void testSearchAndCancelDelete(){
         loginPage = new LoginPage();
-        ExcelHelper excelHelperLogin = new ExcelHelper();
+        ExcelHelpers excelHelpersLogin = new ExcelHelpers();
         loginCMS();
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
 
-        ExcelHelper excelHelperCate = new ExcelHelper();
-        excelHelperCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
-        categoryPage.verifySearchCategory(excelHelperCate.getCellData("NAME", 1));
+        ExcelHelpers excelHelpersCate = new ExcelHelpers();
+        excelHelpersCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
+        categoryPage.verifySearchCategory(excelHelpersCate.getCellData("NAME", 1));
         categoryPage.deleteAndVerifyCategory();
         categoryPage.clickCancelDelete();
     }
@@ -124,11 +124,11 @@ public class CategoryTest extends BaseTest {
         loginCMS();
         categoryPage = dashboardPage.openAndVerifyCategoryPage();
 
-        ExcelHelper excelHelperCate = new ExcelHelper();
-        excelHelperCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
-        categoryPage.verifySearchCategory(excelHelperCate.getCellData("NAME", 1));
+        ExcelHelpers excelHelpersCate = new ExcelHelpers();
+        excelHelpersCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
+        categoryPage.verifySearchCategory(excelHelpersCate.getCellData("NAME", 1));
         categoryPage.deleteAndVerifyCategory();
         categoryPage.clickDelete();
-        categoryPage.verifyCategoryAfterDelete(excelHelperCate.getCellData("NAME", 1));
+        categoryPage.verifyCategoryAfterDelete(excelHelpersCate.getCellData("NAME", 1));
     }
 }

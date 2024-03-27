@@ -52,8 +52,9 @@ public class CategoryTest extends BaseTest {
         );
     }
 
-    @Test
-    public void testAddNewSaveCategory(){
+    @Test(dataProvider = "data_add_category", dataProviderClass = DataProviderFactory.class)
+    @DataProvider(parallel = true)
+    public void testAddNewSaveCategory(Hashtable<String, String> data){
         loginPage = new LoginPage();
         ExcelHelpers excelHelpersLogin = new ExcelHelpers();
         excelHelpersLogin.setExcelFile(ConfigData.EXCEL_FILE_DATA, "Login");
@@ -71,13 +72,13 @@ public class CategoryTest extends BaseTest {
         excelHelpersCate.setExcelFile(ConfigData.EXCEL_FILE_CATE, "Category");
 
         categoryPage.inputDataNewCategory(
-                excelHelpersCate.getCellData("NAME", 1),
-                excelHelpersCate.getCellData("PARENT",1),
-                excelHelpersCate.getCellData("ORDERING", 1),
-                excelHelpersCate.getCellData("TYPE",1),
-                excelHelpersCate.getCellData("META_TITLE", 1),
-                excelHelpersCate.getCellData("META_DES",1),
-                excelHelpersCate.getCellData("FILTERING", 1)
+                data.get("NAME"),
+                data.get("PARENT"),
+                data.get("ORDERING"),
+                data.get("TYPE"),
+                data.get("META_TITLE"),
+                data.get("META_DES"),
+                data.get("FILTERING")
         );
         categoryPage.saveCategory();
         categoryPage.verifySaveCategory();

@@ -1,11 +1,16 @@
 package CMS.pages;
 
 import constants.ConfigData;
+import drivers.DriverManager;
 import keywords.WebUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
+import utils.LogUtils;
+
+import java.util.List;
 
 public class CategoryPage {
 
@@ -41,6 +46,31 @@ public class CategoryPage {
     private By optionDelete = By.xpath("//a[@id='delete-link']");
 
     private By editCategory = By.xpath("//tbody/tr[1]/td[10]/a[1]");
+    private By rowItemSearch = By.xpath("//table//tbody/tr");
+
+
+
+    private void checkTotalResultOnPageByName(String categoryname){
+
+        List<WebElement> row = DriverManager.getDriver().findElements(rowItemSearch);
+        int totalRow = row.size();
+        LogUtils.info("Total result in page 1: " + totalRow);
+
+        for (int i=1; i<=totalRow; i++){
+            WebElement check = WebUI.getWebElement(By.xpath("//tbody/tr["+i+"]/td[2]"));
+            WebUI.scrollToElement(check);
+
+            LogUtils.info("--Value " + i + ": " + check.getText());
+            WebUI.assertContains(check.getText().toLowerCase(), categoryname, "Row " + i + " Not contains value search.");
+        }
+
+    }
+
+    private void checkPagination(){
+
+    }
+
+
 
     public void clickAddNewCategory(){
         WebUI.clickElement(buttonAddNewCategory);
@@ -62,7 +92,7 @@ public class CategoryPage {
         WebUI.select(dropdownTypeCategory, "value", value);
         WebUI.clickElement(addFileBannerCategory);
         WebUI.setTextElement(searchFile, nameImage);
-        WebUI.sleep(2);
+        WebUI.sleep(3);
         WebUI.clickElement(fileImage);
         WebUI.clickElement(buttonAddFile);
         WebUI.setTextElement(inputMetaTitle, title);
@@ -88,6 +118,12 @@ public class CategoryPage {
         WebUI.setTextAndKey(inputSearchCategory, nameCategory, Keys.ENTER);
         WebUI.checkElementDisplay(firstItemSearchCategory);
         WebUI.assertEquals(WebUI.getWebElement(firstItemSearchCategory).getText(), nameCategory, "Can't Find Category");
+
+        List<WebElement> row = DriverManager.getDriver().findElements(rowItemSearch);
+        int totalRow = row.size();
+        LogUtils.info("Total result in page 1: " + totalRow);
+
+        checkTotalResultOnPageByName(nameCategory);
     }
 
     public void verifyDataAfterAdd(String categoryname, String parent, String ordering,String type, String title, String description, String text) {
@@ -117,7 +153,4 @@ public class CategoryPage {
         Assert.assertNotEquals(WebUI.getWebElement(firstItemSearchCategory).getText(), nameCategory, "Category has not been Delete");
     }
 
-    public void checkNumberItemSearch(){
-
-    }
 }
